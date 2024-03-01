@@ -5,7 +5,6 @@
 </template>
 
 <script>
-
 import FactureData from"../src/components/FactureData.vue"
 
 export default {

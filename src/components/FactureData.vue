@@ -2,48 +2,69 @@
   <v-data-table
     :headers="headers"
     :items="dataCostumers"
-    class="elevation-1"
+    class="elevation-0"
   >
     <template v-slot:top>
       <v-toolbar
         flat
       >
-        <v-toolbar-title>My CRUD</v-toolbar-title>
+        <v-toolbar-title>factures</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
           vertical
         ></v-divider>
+      
         <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Rechercher"
+        single-line
+        hide-details
+      ></v-text-field>
         
 
       </v-toolbar>
     </template>
-    <template #[`item.actions`]="{ item }">
+    <template #[`item.details`]="{ item }">
       <v-icon
         small
         class="mr-2"
-        @click="editItem(item)"
+        @click="showDetails(item)"
       >
-        mdi-datails
+        mdi-details
       </v-icon>
+ 
+    </template>
+    <template #[`item.actions`]>
       <v-icon
         small
-        @click="deleteItem(item)"
+        class="mr-2"
+    
       >
-        mdi-delete
+        mdi-download
       </v-icon>
+ 
     </template>
   
-  </v-data-table></v-app>
+  </v-data-table> <detailsClient :showFacture="showFacture" :itemsInvoice="itemsInvoice" @newVal="newVal"></detailsClient></v-app>
+ 
 </template>
 <script>
+import detailsClient from"./detailsClient.vue"
 
 import axios  from 'axios'
   export default {
 
+components:{
+  detailsClient 
+},
 
     data: () => ({
+      search:"",
+      showFacture:false,
+      itemsInvoice:{},
       dataCostumers:[],
       dialog: false,
       dialogDelete: false,
@@ -55,11 +76,12 @@ import axios  from 'axios'
         
           value:"InvoiceID"
         },
-        { text: 'Facture Date', sortable: false,  value:"InvoiceDate"},
-        { text: 'Client Nom',  sortable: false,value:"ClientName"},
-        { text: 'Fournisseur Nom', value:"SupplierName",sortable: false},
-        { text: 'Montant TTC', value:"totalTCC"},
-        { text: 'Facture details', sortable: false },
+        { text: 'Facture Date', sortable: false,  value:"InvoiceDate",      align: 'center',},
+        { text: 'Client Nom',  sortable: false,value:"ClientName",      align: 'center',},
+        { text: 'Fournisseur Nom', value:"SupplierName",sortable: false,      align: 'center',},
+        { text: 'Montant TTC', value:"totalTTC",      align: 'center',},
+        { text: 'Facture details', sortable: false ,value:"details",      align: 'center',},
+            { text: 'telecharger facture', sortable: false ,value:"actions",      align: 'center',},
       ],
       desserts: [],
       editedIndex: -1,
@@ -81,34 +103,28 @@ import axios  from 'axios'
     },
 
     methods: {
+      newVal(val){
+        this.showFacture=val
+      },
       getApiFacture(){
       axios.get("https://elhoussam.github.io/invoicesapi/db.json").then((res)=>{
         this.dataCostumers=res.data;
-  this.dataCostumers.map((element)=>{
-    element.totalTCC =this._.sumBy(element.InvoiceItems,"ItemPrice")
+        this.dataCostumers.map((element)=>{
+       element.totalPrice =this._.sumBy(element.InvoiceItems,"ItemPrice")
+       element.totalTax=this._.sumBy(element.InvoiceItems,"ItemTax")
+       element.totalTTC= element.totalTax+element.totalPrice 
 
   })
-        console.log(res.data)
       }).catch((error)=>{
         console.log(error)
       })
     } ,
-      editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
+    showDetails (item) {
+     this.itemsInvoice=item;
+     this.showFacture=true;
       },
 
-      deleteItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-
-      deleteItemConfirm () {
-        this.desserts.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
+  
 
       close () {
         this.dialog = false
