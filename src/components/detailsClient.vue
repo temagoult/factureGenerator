@@ -49,7 +49,7 @@
     :headers="headersTax"
     :items="[itemInvoice]"
     :items-per-page="5"
-    class="elevation-1 !p-2 sm:col-start-2 col-span-2"
+    class="elevation-1 !p-2 sm:col-start-2 sm:col-span-1 col-span-2"
     hide-default-footer  
     mobile-breakpoint="0"
     >
