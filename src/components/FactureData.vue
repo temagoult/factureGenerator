@@ -1,5 +1,6 @@
 <template><v-app>
   <v-data-table
+  :search="search"
     :headers="headers"
     :items="dataCostumers"
     class="elevation-0"
@@ -41,7 +42,7 @@
       <v-icon
         small
         class="mr-2"
-    
+        @click="download(item)"
       >
         mdi-download
       </v-icon>
@@ -49,7 +50,6 @@
     </template>
   
   </v-data-table> <detailsClient :showFacture="showFacture" :itemsInvoice="itemsInvoice" @newVal="newVal"></detailsClient></v-app>
- 
 </template>
 <script>
 import detailsClient from"./detailsClient.vue"
@@ -60,8 +60,7 @@ import axios  from 'axios'
 components:{
   detailsClient 
 },
-
-    data: () => ({
+ data: () => ({
       search:"",
       showFacture:false,
       itemsInvoice:{},
@@ -122,6 +121,10 @@ components:{
     showDetails (item) {
      this.itemsInvoice=item;
      this.showFacture=true;
+      },
+      download (item) {
+     this.itemsInvoice=item;
+   
       },
 
   

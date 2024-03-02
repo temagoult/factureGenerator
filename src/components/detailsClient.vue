@@ -1,9 +1,9 @@
 <template>
-<v-dialog v-model="showFactureDetails" class="!p-2 " width="unset" >
-  <v-card class="!p-2  mx-auto" > 
-   
+<v-dialog v-model="showFactureDetails" class="!p-2 " width="unset" eager    >
 
-    <h3 class="text-center text-[35px] p-2">Facture n :{{itemsInvoice.InvoiceID  }}</h3>
+  <v-card class="!p-2 mx-auto"  > 
+    <v-btn @click="generatePDF"> download</v-btn>
+    <h3 class="text-center text-[35px] p-2 " >Facture n :{{itemsInvoice.InvoiceID  }}</h3>
     <div class="grid grid-cols-2 gap-4 p-2">
  
     <div class="p-2 col-start-2 ">date de la facture :{{ itemsInvoice.InvoiceDate }}</div>
@@ -26,6 +26,7 @@
   </div>
 
   <v-data-table 
+
     :headers="headers"
     :items="itemsInvoice.InvoiceItems"
     :items-per-page="5"
@@ -43,26 +44,26 @@
   </v-data-table>
   <v-data-table 
     :headers="headersTax"
-:items="itemsSecondTable"
+    :items="[itemsInvoice]"
     :items-per-page="5"
     class="elevation-1 !p-2 col-start-2"
     hide-default-footer  
-    
     >
-
   </v-data-table>
   </div> 
   
   </v-card>
-  
+=
   </v-dialog>
 </template>
 
 <script>
-    export default {
-      data () {
+
+ export default {
+ data () {
         return {
-          itemsSecondTable:[],
+          test:true,
+         
           headers: [
             {
               text: 'N*',
@@ -90,7 +91,7 @@
           ],
           headersTax: [
             {
-              text: 'TOTAL*',
+              text: 'TOTAL',
               align: 'center',
               sortable: false,
               value: 'totalPrice',
@@ -113,21 +114,37 @@
           ],
       
       }},
-      created(){
-        this.itemsSecondTable=[];
-this.itemsSecondTable.push(this.itemsInvoice)
+ mounted(){
+
+
       },
-      computed:{
+
+ computed:{
   showFactureDetails:{
     get(){
       return this.showFacture
     },
 
   set(val){
-this.$emit("newVal",val)  }
-}},
-
-      props:{
+  this.$emit("newVal",val)  }
+  }},
+  methods:{
+  close(){
+            this.showFactureDetails=false
+          
+          },
+          onProgress(event) {
+      console.log(`Processed: ${event} / 100`);
+    },
+    hasGenerated() {
+      alert("PDF generated successfully!");
+    },
+    generatePDF() {
+      this.$refs.html2Pdf.generatePdf();
+    },
+          
+        },
+  props:{
         itemsInvoice:{
         type:Object
       },
@@ -136,21 +153,16 @@ this.$emit("newVal",val)  }
       }
          },
         
-        methods:{
-          close(){
-            this.showFactureDetails=false
-          
-          }
-        }
+
         }
     
-  </script> 
-  <style >
+   </script> 
+   <style >
   .v-dialog {
   box-shadow: none !important;
-}
-.me .v-data-table-header  th {
+  }
+  .me .v-data-table-header  th {
   background-color: rgb(246, 20, 20) !important;
-}
+  }
 
 </style>
