@@ -49,8 +49,9 @@
     :headers="headersTax"
     :items="[itemInvoice]"
     :items-per-page="5"
-    class="elevation-1 !p-2 col-start-2"
+    class="elevation-1 !p-2 sm:col-start-2 col-span-2"
     hide-default-footer  
+    mobile-breakpoint="0"
     >
   </v-data-table>
 
@@ -134,13 +135,10 @@ export default {
   close(){
   this.showFactureDetails=false
    },
-   customFilter(value, search, item) {
-    return !!search && (item.InvoiceItems.ItemLibelle.includes(search) )
-  },
- 
+
   generatePDF() {
-    var element = document.getElementById('element');
-  var opt = {
+  let element = document.getElementById('element');
+  let opt = {
   margin: 0.3,
   filename:'myfile.pdf',
   image:{ type: 'jpeg', quality: 0.98 },
