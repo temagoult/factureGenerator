@@ -3,7 +3,7 @@
   :search="search"
     :headers="headers"
     :items="dataCostumers"
-    class="elevation-0"
+    class="elevation-0 mainTable"
   >
     <template v-slot:top>
       <v-toolbar
@@ -38,32 +38,25 @@
       </v-icon>
  
     </template>
-    <template #[`item.actions`]>
-      <v-icon
-        small
-        class="mr-2"
-        @click="download(item)"
-      >
-        mdi-download
-      </v-icon>
- 
-    </template>
+
   
-  </v-data-table> <detailsClient :showFacture="showFacture" :itemsInvoice="itemsInvoice" @newVal="newVal"></detailsClient></v-app>
+  </v-data-table>
+    <detailsClient :showFacture="showFacture" :itemInvoice="itemInvoice" @newVal="newVal"></detailsClient>
+</v-app>
 </template>
 <script>
-import detailsClient from"./detailsClient.vue"
+import detailsClient from"../components/detailsClient.vue"
 
 import axios  from 'axios'
   export default {
 
 components:{
-  detailsClient 
+   detailsClient 
 },
  data: () => ({
       search:"",
       showFacture:false,
-      itemsInvoice:{},
+      itemInvoice:{},
       dataCostumers:[],
       dialog: false,
       dialogDelete: false,
@@ -71,16 +64,13 @@ components:{
         {
           text: 'Facture ID',
           align: 'center',
-      
-        
           value:"InvoiceID"
         },
-        { text: 'Facture Date', sortable: false,  value:"InvoiceDate",      align: 'center',},
-        { text: 'Client Nom',  sortable: false,value:"ClientName",      align: 'center',},
-        { text: 'Fournisseur Nom', value:"SupplierName",sortable: false,      align: 'center',},
-        { text: 'Montant TTC', value:"totalTTC",      align: 'center',},
-        { text: 'Facture details', sortable: false ,value:"details",      align: 'center',},
-            { text: 'telecharger facture', sortable: false ,value:"actions",      align: 'center',},
+        { text: 'Facture Date', sortable: false,  value:"InvoiceDate",align: 'center',},
+        { text: 'Client Nom',  sortable: false,value:"ClientName",align: 'center',},
+        { text: 'Fournisseur Nom', value:"SupplierName",sortable: false, align: 'center',},
+        { text: 'Montant TTC', value:"totalTTC",  sortable: false,align: 'center',},
+        { text: 'Facture details', sortable: false ,value:"details", align: 'center',},
       ],
       desserts: [],
       editedIndex: -1,
@@ -119,40 +109,12 @@ components:{
       })
     } ,
     showDetails (item) {
-     this.itemsInvoice=item;
+     this.itemInvoice=item;
      this.showFacture=true;
       },
-      download (item) {
-     this.itemsInvoice=item;
    
-      },
 
-  
 
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
-      },
     },
   }
 </script>

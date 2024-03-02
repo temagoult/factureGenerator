@@ -1,16 +1,18 @@
 <template>
 <div class="container">
-  <FactureData></FactureData></div>
+  <FactureData></FactureData>
+  </div>
+
 
 </template>
 
 <script>
-import FactureData from"../src/components/FactureData.vue"
-
+import FactureData from"../src/views/FactureData.vue"
 export default {
 name: 'App',
 components:{
-  FactureData
+  FactureData,
+
 },
 
 data: () => ({
@@ -19,4 +21,4 @@ data: () => ({
 methods:{
 }
 }
-</script>
+</script>./views/FactureData.vue

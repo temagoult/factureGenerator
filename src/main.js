@@ -5,6 +5,9 @@ import vuetify from './plugins/vuetify'
 import "@/assets/index.css"
 import VueLodash from 'vue-lodash'
 import lodash from 'lodash'
+
+
+
  import "../src/style/style.css"
 // name is optional
 Vue.use(VueLodash, { name: 'custom' , lodash: lodash })

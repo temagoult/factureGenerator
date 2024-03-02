@@ -1,36 +1,39 @@
 <template>
 <v-dialog v-model="showFactureDetails" class="!p-2 " width="unset" eager    >
 
-  <v-card class="!p-2 mx-auto"  > 
-    <v-btn @click="generatePDF"> download</v-btn>
-    <h3 class="text-center text-[35px] p-2 " >Facture n :{{itemsInvoice.InvoiceID  }}</h3>
+  <v-card class="!p-2 "> <div class="flex justify-center">
+    <v-btn @click="generatePDF" class="!p-2 md:text-[16px] sm:!text-[12px] !text-[10px] w-[30%] !self-center" color="green"> telecharger la facture</v-btn></div>
+   <section   id="element" >
+    <h3 class="text-center md:text-[35px] sm:-[30px] text-[25px] p-2 " >Facture n :{{itemInvoice.InvoiceID  }}</h3>
+   
     <div class="grid grid-cols-2 gap-4 p-2">
+      
  
-    <div class="p-2 col-start-2 ">date de la facture :{{ itemsInvoice.InvoiceDate }}</div>
+    <div class="px-2 mb-5 col-start-2 md:text-[15px] sm:text-[12px] text-[9px] "  >date de la facture :{{ itemInvoice.InvoiceDate }}</div>
     <div class="flex flex-col gap-1"> 
-    <div class="fournisseur px-2 border border-b-1 border-black border-x-transparent border-t-transparent italic">
+    <div class="fournisseur p-2 border border-b-1 border-black border-x-transparent border-t-transparent italic md:text-[16px] sm:text-[13px] text-[12px]">
     FOURNISSEUR
   </div>
-  <p class="font-bold px-2"> {{itemsInvoice.SupplierName}}</p>
-  <p class=" px-2"> {{itemsInvoice.SupplierAddress}}</p>
-  <p class="px-2"> {{itemsInvoice.SupplierPhone}}</p>
+  <p class="font-bold px-2 md:text-[15px] sm:text-[12px] text-[10px]"> {{itemInvoice.SupplierName}}</p>
+  <p class=" px-2 md:text-[15px] sm:text-[12px] text-[10px]"> {{itemInvoice.SupplierAddress}}</p>
+  <p class="px-2 md:text-[15px] sm:text-[12px] text-[10px]"> {{itemInvoice.SupplierPhone}}</p>
   </div>
 
   <div class="flex flex-col gap-1"> 
-    <div class="client px-2 border border-b-1 border-black border-x-transparent border-t-transparent italic">
+    <div class="client p-2 border border-b-1 border-black border-x-transparent border-t-transparent italic md:text-[16px]  sm:text-[13px] text-[12px]">
     CLIENT
   </div>
-  <p class="font-bold px-2"> {{itemsInvoice.ClientName}}</p>
-  <p class="px-2"> {{itemsInvoice.ClientAddress}}</p>
-  <p class="px-2"> {{itemsInvoice.ClientPhone}}</p>
+  <p class="font-bold px-2 md:text-[15px] sm:text-[12px] text-[10px]"> {{itemInvoice.ClientName}}</p>
+  <p class="px-2 md:text-[15px] sm:text-[12px] text-[10px]"> {{itemInvoice.ClientAddress}}</p>
+  <p class="px-2 md:text-[15px] sm:text-[12px] text-[10px]"> {{itemInvoice.ClientPhone}}</p>
   </div>
 
   <v-data-table 
-
+  mobile-breakpoint="0"
     :headers="headers"
-    :items="itemsInvoice.InvoiceItems"
+    :items="itemInvoice.InvoiceItems"
     :items-per-page="5"
-    class="elevation-1 !p-2 col-span-2 me"
+    class="elevation-1  col-span-2 me"
     hide-default-footer  >
   <template v-slot:[`item.num`]="{index}">
 
@@ -44,22 +47,25 @@
   </v-data-table>
   <v-data-table 
     :headers="headersTax"
-    :items="[itemsInvoice]"
+    :items="[itemInvoice]"
     :items-per-page="5"
     class="elevation-1 !p-2 col-start-2"
     hide-default-footer  
     >
   </v-data-table>
-  </div> 
+
+  <p class="signature !p-2 my-13 col-start-2 text-center md:text-[16px] sm:text-[14px] text-[12px] "> LA SIGNATURE</p>
+</div>
+  </section>
   
   </v-card>
-=
+
   </v-dialog>
 </template>
 
 <script>
-
- export default {
+import  html2pdf   from 'html2pdf.js'
+export default {
  data () {
         return {
           test:true,
@@ -114,11 +120,6 @@
           ],
       
       }},
- mounted(){
-
-
-      },
-
  computed:{
   showFactureDetails:{
     get(){
@@ -129,23 +130,26 @@
   this.$emit("newVal",val)  }
   }},
   methods:{
+
   close(){
-            this.showFactureDetails=false
-          
-          },
-          onProgress(event) {
-      console.log(`Processed: ${event} / 100`);
-    },
-    hasGenerated() {
-      alert("PDF generated successfully!");
-    },
-    generatePDF() {
-      this.$refs.html2Pdf.generatePdf();
+  this.showFactureDetails=false
+   },
+ 
+  generatePDF() {
+    var element = document.getElementById('element');
+  var opt = {
+  margin: 0.5,
+  filename:'myfile.pdf',
+  image:{ type: 'jpeg', quality: 0.98 },
+  html2canvas: { scale: 2 },
+  jsPDF:{ unit: 'in', format: 'letter', orientation: 'landscape' }
+  };
+  html2pdf().set(opt).from(element).save();
     },
           
         },
   props:{
-        itemsInvoice:{
+        itemInvoice:{
         type:Object
       },
       showFacture:{
@@ -164,5 +168,9 @@
   .me .v-data-table-header  th {
   background-color: rgb(246, 20, 20) !important;
   }
-
+  .v-data-table   {
+  border: 1px solid rgba(0,0,0,0.12) !important; }
+  .mainTable .v-data-table-header  th {
+  background-color: rgb(244, 244, 244) !important;
+  }
 </style>
