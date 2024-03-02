@@ -134,6 +134,9 @@ export default {
   close(){
   this.showFactureDetails=false
    },
+   customFilter(value, search, item) {
+    return !!search && (item.InvoiceItems.ItemLibelle.includes(search) )
+  },
  
   generatePDF() {
     var element = document.getElementById('element');

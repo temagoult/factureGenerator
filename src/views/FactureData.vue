@@ -4,6 +4,7 @@
     :headers="headers"
     :items="dataCostumers"
     class="elevation-0 mainTable"
+    :custom-filter="customFilter"
   >
     <template v-slot:top>
       <v-toolbar
@@ -38,8 +39,6 @@
       </v-icon>
  
     </template>
-
-  
   </v-data-table>
     <detailsClient :showFacture="showFacture" :itemInvoice="itemInvoice" @newVal="newVal"></detailsClient>
 </v-app>
@@ -78,6 +77,15 @@ components:{
     },
 
     methods: {
+      customFilter(value, search, item) {
+
+        item.InvoiceItems.map((e)=>{
+          value=e
+        })
+    
+      return value.ItemLibelle.includes(search)
+  },
+ 
       newVal(val){
         this.showFacture=val
       },

@@ -3,7 +3,6 @@
   <FactureData></FactureData>
   </div>
 
-
 </template>
 
 <script>
