@@ -58,8 +58,6 @@ components:{
       showFacture:false,
       itemInvoice:{},
       dataCostumers:[],
-      dialog: false,
-      dialogDelete: false,
       headers: [
         {
           text: 'Facture ID',
@@ -72,22 +70,10 @@ components:{
         { text: 'Montant TTC', value:"totalTTC",  sortable: false,align: 'center',},
         { text: 'Facture details', sortable: false ,value:"details", align: 'center',},
       ],
-      desserts: [],
-      editedIndex: -1,
 
     }),
 
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-      dialogDelete (val) {
-        val || this.closeDelete()
-      },
-    },
-
-    created () {
+    mounted () {
     this.getApiFacture()
     },
 

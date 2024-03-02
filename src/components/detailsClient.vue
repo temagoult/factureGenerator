@@ -1,8 +1,8 @@
 <template>
 <v-dialog v-model="showFactureDetails" class="!p-2 " width="unset" eager    >
 
-  <v-card class="!p-2 "> <div class="flex justify-center">
-    <v-btn @click="generatePDF" class="!p-2 md:text-[16px] sm:!text-[12px] !text-[10px] w-[30%] !self-center" color="green"> telecharger la facture</v-btn></div>
+  <v-card class="!p-2 "> <div class="flex  md:text-[16px] sm:!text-[12px] !text-[10px]">
+    <v-btn @click="generatePDF" class="!p-2 md:!text-[16px] sm:!text-[12px] !text-[10px] w-[30%] !self-center" color="blue" icon> <v-icon>mdi-printer</v-icon></v-btn></div>
    <section   id="element" >
     <h3 class="text-center md:text-[35px] sm:-[30px] text-[25px] p-2 " >Facture n :{{itemInvoice.InvoiceID  }}</h3>
    
@@ -138,7 +138,7 @@ export default {
   generatePDF() {
     var element = document.getElementById('element');
   var opt = {
-  margin: 0.5,
+  margin: 0.3,
   filename:'myfile.pdf',
   image:{ type: 'jpeg', quality: 0.98 },
   html2canvas: { scale: 2 },
@@ -167,10 +167,13 @@ export default {
   }
   .me .v-data-table-header  th {
   background-color: rgb(246, 20, 20) !important;
+  font-size: 14px !important;
   }
   .v-data-table   {
-  border: 1px solid rgba(0,0,0,0.12) !important; }
+  border: 1px solid rgba(0,0,0,0.12) !important;
+  font-size: 14px !important; }
   .mainTable .v-data-table-header  th {
   background-color: rgb(244, 244, 244) !important;
+  font-size: 16px !important;
   }
 </style>
